@@ -23,3 +23,9 @@ Independent QA gate that validates the built solution against the original requi
 
 ### Dispatcher
 General-purpose entry point for any ServiceNow or full-stack development task. Loads a skill index of 185+ skills at startup, classifies the request by domain, and routes to the correct skill automatically. Covers ITSM, CSM, HRSD, development, GenAI, admin, security, GRC, catalog, CMDB, and general coding (JS, Python, React, Node).
+
+---
+
+## Rule of thumb:
+Small task → Dispatcher
+Full feature → Orchestrator
