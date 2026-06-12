@@ -28,4 +28,5 @@ General-purpose entry point for any ServiceNow or full-stack development task. L
 
 ## Rule of thumb:
 Small task → Dispatcher
+
 Full feature → Orchestrator
