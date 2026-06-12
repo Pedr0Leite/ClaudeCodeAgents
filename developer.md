@@ -56,7 +56,17 @@ For each component:
 - Apply scoped app rules (see below)
 - Log result
 
-### 4. Skill routing
+### 4. Tool priority
+
+**Always follow this order — no exceptions:**
+
+1. **ServiceNow MCP server** (`/mcp`) — use for all ServiceNow operations when available
+2. **REST API** — fallback only if MCP server is unavailable or does not support the operation
+3. **Manual / scripted** — last resort only
+
+Before any build step, verify MCP server is reachable. If not, log it in `dev-log.md` and fall back to REST.
+
+### 5. Skill routing
 
 | Component | Skill |
 |---|---|
@@ -109,6 +119,22 @@ Always apply:
 - Flag any cross-scope calls before implementing
 - Never deploy — deployment is a separate human-controlled step
 - After building business logic — note ATF test suggestions in dev-log
+
+---
+
+## Ponytail — OOTB First
+
+This agent uses [ponytail](https://github.com/DietrichGebert/ponytail) principles. Before writing any custom code, always ask:
+
+> "Does ServiceNow already do this?"
+
+Priority order:
+1. OOTB functionality — use it as-is
+2. Native flows / spoke actions
+3. Configuration (fields, conditions, UI policies)
+4. Minimal scripting only when above options are exhausted
+
+Never write custom code to replace something the platform already provides.
 
 ---
 

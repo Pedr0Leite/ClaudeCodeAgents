@@ -1,6 +1,8 @@
 # ClaudeCodeAgents
 A team of specialized Claude Code agents for end-to-end ServiceNow scoped application development.
 
+![Agent Orchestration Pipeline](orchestration.svg)
+
 ---
 
 ## Agents
@@ -84,3 +86,17 @@ export SERVICENOW_DOCS_PATH=/path/to/ServiceNowDocs
 
 **ponytail**
 Follow install instructions at https://github.com/DietrichGebert/ponytail
+
+---
+
+## Tool Priority
+
+All agents that interact with ServiceNow **must** follow this order:
+
+| Priority | Tool | When |
+|---|---|---|
+| 1st | **ServiceNow MCP server** (`/mcp`) | Always — use first |
+| 2nd | **REST API** | Only if MCP is unavailable or unsupported |
+| 3rd | **Manual / scripted** | Last resort only |
+
+The Developer agent enforces this on every build step. MCP unavailability is logged in `dev-log.md`.
