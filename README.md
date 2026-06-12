@@ -1,5 +1,4 @@
 # ClaudeCodeAgents
-
 A team of specialized Claude Code agents for end-to-end ServiceNow scoped application development.
 
 ---
@@ -26,7 +25,60 @@ General-purpose entry point for any ServiceNow or full-stack development task. L
 
 ---
 
-## Rule of thumb:
-Small task → Dispatcher
+## Rule of thumb
+- Small task → Dispatcher
+- Full feature → Orchestrator
 
-Full feature → Orchestrator
+---
+
+## Invocation
+
+### Orchestrator — full development pipeline
+```bash
+claude --agent orchestrator "build a proactive case communication feature for CSM"
+```
+
+### Dispatcher — quick one-off task
+```bash
+claude --agent dispatcher "fix business rule on incident table"
+```
+
+### Inside a Claude Code session
+```
+/agent orchestrator
+/agent dispatcher
+```
+Then describe the requirement when prompted.
+
+---
+
+## Agent Structure
+
+```
+~/.claude/agents/
+  orchestrator.md
+  ba-agent.md
+  architect.md
+  developer.md
+  tester.md
+  dispatcher.md
+```
+
+---
+
+## Workspace
+
+Orchestrator creates a per-project workspace at `~/.claude/workspace/[project-slug]/`:
+
+```
+~/.claude/workspace/[project-slug]/
+  requirements.md     ← raw client input
+  stories.md          ← BA output
+  architecture.md     ← Architect design + dev instructions
+  test-plan.md        ← Architect test plan
+  dev-log.md          ← Developer build log
+  test-results.md     ← Tester results
+  status.md           ← Current pipeline state
+```
+
+Workspace persists between sessions — re-runs continue from last saved phase.
