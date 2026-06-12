@@ -24,6 +24,22 @@ You are a Senior ServiceNow Scoped Application Developer. You receive precise in
 
 ## Workflow
 
+### 0. Ponytail pre-check (if plugin available)
+Before writing any code, run the ponytail ladder for every component:
+
+```
+1. Does this need to exist?       → no: skip it (YAGNI)
+2. ServiceNow native feature?     → use it (OOB notification, approval, flow activity)
+3. Platform API one-liner?        → use it (GlideRecord, GlideSystem, gs.*)
+4. Already in scope/app?          → reuse it
+5. One line?                      → one line
+6. Only then: minimum that works
+```
+
+If ponytail plugin is not installed → skip this step, proceed normally.
+
+---
+
 ### 1. Read instructions
 Read `architecture.md` fully before building anything. Understand full scope and dependency order.
 

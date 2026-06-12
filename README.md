@@ -17,6 +17,9 @@ Translates rm_stories into a precise technical design and actionable developer i
 ### Developer
 Builds every component in ServiceNow following the Architect's instructions exactly and in dependency order. Routes each component type to the correct dispatcher skill (Business Rules, Client Scripts, Flows, ACLs, etc.), enforces scoped app prefixing, and logs all results to `dev-log.md`. Never deploys — that step is human-controlled.
 
+**Dependency: [ponytail](https://github.com/DietrichGebert/ponytail)**
+The Developer agent uses ponytail to enforce a "laziest senior dev" mindset — preferring OOTB platform capabilities, existing APIs, and native flows over custom code. The best code is the code you never wrote.
+
 ### Tester
 Independent QA gate that validates the built solution against the original requirements. Executes the Architect's test plan, cross-checks the dev log for skipped or failed components, produces a requirements-coverage matrix, and outputs a final PASS/FAIL verdict with classified failures to route back into the fix loop.
 
@@ -26,19 +29,19 @@ General-purpose entry point for any ServiceNow or full-stack development task. L
 ---
 
 ## Rule of thumb
-- Small task → Dispatcher
-- Full feature → Orchestrator
+- Small task → **Dispatcher**
+- Full feature → **Orchestrator**
 
 ---
 
 ## Invocation
 
-### Orchestrator — full development pipeline
+### Start a full development pipeline
 ```bash
 claude --agent orchestrator "build a proactive case communication feature for CSM"
 ```
 
-### Dispatcher — quick one-off task
+### Quick one-off task
 ```bash
 claude --agent dispatcher "fix business rule on incident table"
 ```
@@ -46,39 +49,38 @@ claude --agent dispatcher "fix business rule on incident table"
 ### Inside a Claude Code session
 ```
 /agent orchestrator
-/agent dispatcher
 ```
-Then describe the requirement when prompted.
+Then describe your requirement when prompted.
 
 ---
 
-## Agent Structure
-
+## Agent structure
 ```
 ~/.claude/agents/
-  orchestrator.md
+  orchestrator.md   ← commands everyone
   ba-agent.md
   architect.md
-  developer.md
+  developer.md      ← requires ponytail
   tester.md
   dispatcher.md
 ```
 
 ---
 
-## Workspace
+## Dependencies
 
-Orchestrator creates a per-project workspace at `~/.claude/workspace/[project-slug]/`:
+| Agent | Dependency | Purpose |
+|---|---|---|
+| BA + Architect + Developer | [ServiceNowDocs](https://github.com/ServiceNow/ServiceNowDocs) | Official platform docs via `search_docs` MCP tool |
+| Developer | [ponytail](https://github.com/DietrichGebert/ponytail) | Enforces OOTB-first, minimal custom code approach |
 
+### Setup
+
+**ServiceNowDocs**
+```bash
+git clone https://github.com/ServiceNow/ServiceNowDocs.git
+export SERVICENOW_DOCS_PATH=/path/to/ServiceNowDocs
 ```
-~/.claude/workspace/[project-slug]/
-  requirements.md     ← raw client input
-  stories.md          ← BA output
-  architecture.md     ← Architect design + dev instructions
-  test-plan.md        ← Architect test plan
-  dev-log.md          ← Developer build log
-  test-results.md     ← Tester results
-  status.md           ← Current pipeline state
-```
 
-Workspace persists between sessions — re-runs continue from last saved phase.
+**ponytail**
+Follow install instructions at https://github.com/DietrichGebert/ponytail
