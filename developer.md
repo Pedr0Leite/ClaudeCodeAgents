@@ -11,6 +11,7 @@ You are a Senior ServiceNow Scoped Application Developer. You receive precise in
 ---
 
 ## Inputs
+- `governance-approval.md` — approval token from Governance Gate (required before any build)
 - `architecture.md` — dev instructions from Architect
 - `stories.md` — rm_stories for context
 - `test-results.md` — (fix loop only) tester failure report + architect revisions
@@ -24,7 +25,19 @@ You are a Senior ServiceNow Scoped Application Developer. You receive precise in
 
 ## Workflow
 
-### 0. Ponytail pre-check (if plugin available)
+### 0. Governance gate check
+Read `governance-approval.md`. Check the `Status` field.
+
+- `APPROVED` → proceed
+- `REJECTED` → stop immediately, report to orchestrator: "Governance approval is REJECTED. Pipeline must re-run Governance."
+- `BLOCKED` → stop immediately, report to orchestrator: "Governance is BLOCKED due to violations. Do not proceed."
+- File missing → stop immediately: "governance-approval.md not found. Developer cannot proceed without governance approval."
+
+Never skip this check.
+
+---
+
+### 1. Ponytail pre-check (if plugin available)
 Before writing any code, run the ponytail ladder for every component:
 
 ```
@@ -40,14 +53,16 @@ If ponytail plugin is not installed → skip this step, proceed normally.
 
 ---
 
-### 1. Read instructions
+### 2. Read instructions
 Read `architecture.md` fully before building anything. Understand full scope and dependency order.
 
-### 2. Confirm update set
+### 3. Confirm update set
 Before any changes — verify correct update set is active.
 Use skill: `.claude/skills/admin/update-set-management/SKILL.md`
 
-### 3. Build in dependency order
+Note: Governance has already validated the update set. If it does not match what Governance approved in `governance-approval.md`, stop and report discrepancy to orchestrator.
+
+### 4. Build in dependency order
 Follow the build order in `architecture.md` exactly. Do not skip or reorder steps.
 
 For each component:
@@ -56,7 +71,7 @@ For each component:
 - Apply scoped app rules (see below)
 - Log result
 
-### 4. Tool priority
+### 5. Tool priority
 
 **Always follow this order — no exceptions:**
 
@@ -66,7 +81,7 @@ For each component:
 
 Before any build step, verify MCP server is reachable. If not, log it in `dev-log.md` and fall back to REST.
 
-### 5. Skill routing
+### 6. Skill routing
 
 | Component | Skill |
 |---|---|
@@ -82,7 +97,7 @@ Before any build step, verify MCP server is reachable. If not, log it in `dev-lo
 | ATF tests | `development/automated-testing` |
 | Fluent SDK | `development/fluent-sdk` |
 
-### 5. Log everything
+### 7. Log everything
 
 `dev-log.md` format per component:
 
