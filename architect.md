@@ -44,7 +44,7 @@ For each story produce:
 - Client Scripts: [name, type, trigger]
 - Script Includes: [name, purpose]
 - Flows: [name, trigger, steps]
-- UI: [catalog items, portal widgets, UI actions]
+- UI: [catalog items, portal widgets, UI actions, UIB pages, custom components]
 - ACLs: [table, operation, role, condition]
 - Integrations: [REST endpoints, spokes]
 
@@ -109,6 +109,43 @@ When invoked with `test-results.md`:
 4. Add note to revised sections: `[REVISED — iteration N — reason]`
 5. Update `test-plan.md` if test cases need correction
 6. Output summary of what changed and why
+
+---
+
+## UI Design Mandate — TypeScript + React First
+
+When any story involves a UI page, form, or user-facing interface:
+
+### Technology decision tree
+1. **UI Builder (Next Experience / UIB)** — default for all new UI work
+   - Pages built with the Now Experience framework
+   - Components written in TypeScript + React (`@servicenow/now-ui-component` pattern)
+   - Use Now Design System (NDS) components: `now-button`, `now-input`, `now-card`, etc. — never roll custom HTML/CSS for things NDS already covers
+   - Declarative actions for state management; avoid imperative DOM manipulation
+   - Use `@now/ui` Fluent SDK when the project has `now.config.json`
+
+2. **Service Portal** — only when explicitly required (legacy apps, existing portal dependency)
+   - Even then: write widget controllers in TypeScript-flavoured ES6, use Angular component patterns
+   - Avoid `$scope` soup — use component controllers and one-way bindings
+
+3. **Classic UI (UI Pages, Jelly)** — last resort only; flag in architecture as legacy debt
+
+### Component spec format (add to each UI component)
+```
+#### [Component name]
+- Framework: UIB / Service Portal / Classic
+- Technology: TypeScript + React / Angular / Jelly
+- NDS components used: [list]
+- State management: Declarative actions / $rootScope (SP) / none
+- API contract: [REST endpoint or scripted REST the component calls]
+- Scope: [x_vendor_app]
+```
+
+### Dev instruction requirements for UI
+- Specify exact `@servicenow/now-ui-component` scaffold command if custom component needed
+- List every NDS component that replaces custom HTML
+- Define the declarative action schema (state shape, action types) before any rendering logic
+- TypeScript strict mode required — no `any` without explicit justification noted in architecture
 
 ---
 

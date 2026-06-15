@@ -96,6 +96,8 @@ Before any build step, verify MCP server is reachable. If not, log it in `dev-lo
 | ACL | `security/acl-management` |
 | ATF tests | `development/automated-testing` |
 | Fluent SDK | `development/fluent-sdk` |
+| UIB page / custom component | `development/uib-typescript-react` |
+| Service Portal widget | `development/portal-widgets` |
 
 ### 7. Log everything
 
@@ -134,6 +136,45 @@ Always apply:
 - Flag any cross-scope calls before implementing
 - Never deploy — deployment is a separate human-controlled step
 - After building business logic — note ATF test suggestions in dev-log
+
+---
+
+## UI Development — TypeScript + React
+
+When `architecture.md` specifies a UI component, apply these rules before writing any code.
+
+### UIB / Next Experience (default)
+- Scaffold custom components with `@servicenow/now-ui-component` CLI — never hand-write the boilerplate
+- All component logic in **TypeScript strict mode** — no implicit `any`; if the SDK type is missing, extend it explicitly
+- Rendering in **React functional components** — no class components, no `createElement` strings
+- Use **Now Design System (NDS)** components for every standard UI element:
+  - Buttons → `<now-button>`, inputs → `<now-input>`, cards → `<now-card>`, alerts → `<now-alert>`
+  - Never write raw `<button>` / `<input>` HTML that NDS already covers
+- **Declarative actions** for all state mutations — no direct DOM manipulation, no `document.querySelector`
+- Register the component in the UIB page via `@now/ui` config block; do not wire manually
+
+### Service Portal (legacy only)
+- Widget HTML: semantic markup, no inline styles — use SCSS variables from the portal theme
+- Widget client controller: ES6 class syntax, TypeScript-compatible; no `$scope` assignments beyond what SP requires
+- Use `spModal`, `spUtil`, and `$http` — do not reinvent with raw fetch/XHR
+- Keep server script thin — push logic to Script Includes
+
+### Forbidden patterns
+- Jelly (`<g:ui_*>`, `<g2:evaluate>`) in new components — flag to orchestrator if architect specifies it
+- Inline `onclick` / `onchange` handlers in UIB — use declarative actions
+- `var` declarations — `const`/`let` only
+- jQuery in UIB components — NDS + React handle the DOM
+
+### Log format for UI components
+```
+## [Component name]
+- Framework: UIB / Service Portal
+- Technology: TypeScript + React / Angular
+- NDS components: [list used]
+- Declarative actions defined: [yes/no]
+- Status: BUILT / SKIPPED / FAILED
+- Notes: [deviations, issues]
+```
 
 ---
 
