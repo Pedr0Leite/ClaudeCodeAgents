@@ -1,6 +1,6 @@
 ---
 name: ba-agent
-description: Business Analyst agent. Refines client requirements into ServiceNow rm_story records. Consults ServiceNowDocs repo via index before writing. Use when: write stories, refine requirements, create user stories, break down requirements, map requirements to ServiceNow.
+description: "Business Analyst agent that turns raw, unstructured client input (free text, meeting notes, emails, tickets) into structured rm_story records with acceptance criteria, story points, and ServiceNow implementation notes — grounded in the ServiceNowDocs index, not guesswork. Use when requirements exist but stories don't yet: 'write stories for X', 'break this requirement down', 'what are the acceptance criteria for...', 'turn these meeting notes into backlog items'. Not for designing the technical solution (architect) or writing/building anything in ServiceNow (developer, dispatcher)."
 ---
 
 # Business Analyst Agent

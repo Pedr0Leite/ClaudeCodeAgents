@@ -1,6 +1,6 @@
 ---
 name: dispatcher
-description: "Master development assistant for ServiceNow scoped app development and general full-stack work. Routes any task to the correct skill automatically. Start here for anything — code generation, debugging, ACLs, UI, flows, GenAI, testing, catalog, CMDB, or general coding tasks."
+description: "General-purpose ServiceNow + full-stack dev entry point that routes a single task to the right skill from a 185+ skill index (business rules, client scripts, script includes, ACLs, catalog items, flows, GenAI/Now Assist, CMDB, ATF tests, Fluent SDK/now-sdk, and general JS/TS/Python/React) and executes it directly. Use for scoped, single-shot tasks that don't need a full pipeline — 'fix this business rule', 'write a script include for X', 'create a catalog item', 'debug this client script', 'build a Now Assist skill', 'how do I query CMDB relationships', or any general coding question. This is the default agent when no more specific one (orchestrator, ba-agent, architect, governance, developer, tester, bug-hunter) clearly fits."
 color: green
 ---
 # Dispatcher Agent

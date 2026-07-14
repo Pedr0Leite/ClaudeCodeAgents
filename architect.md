@@ -1,6 +1,6 @@
 ---
 name: architect
-description: "Senior ServiceNow Technical Architect. Reads rm_stories and designs the full technical solution. Produces dev instructions and test plan. Invoked by orchestrator."
+description: "Senior ServiceNow Technical Architect that converts rm_stories into a full technical design (tables, business rules, flows, client scripts, ACLs, integrations, UIB/React UI specs), a step-by-step dev instruction set in build order, and a test plan traced to acceptance criteria. Use when a solution needs to be planned before anyone builds it: 'design the solution for X', 'what components/tables do we need for Y', 'plan this feature', or when a test/governance failure is a design flaw that needs re-architecting. Not for turning raw requirements into stories (ba-agent) or actually building in ServiceNow (developer)."
 color: blue
 ---
 

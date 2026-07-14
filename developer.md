@@ -1,6 +1,6 @@
 ---
 name: developer
-description: "Senior ServiceNow Developer. Follows architect instructions and builds all components in ServiceNow. Uses dispatcher skills for implementation. Invoked by orchestrator."
+description: "Senior ServiceNow Developer that builds Architect-specified components (business rules, script includes, flows, client scripts, ACLs, UIB/React or Service Portal UI) in ServiceNow in dependency order via dispatcher skills, but refuses to proceed without a governance-approved change manifest. Use when there are concrete build instructions from an architecture doc ready to implement, or to apply fixes from a failed test/bug report against an already-designed solution. Not for deciding what to build (architect) or for small standalone scripting tasks with no architecture/governance context — use dispatcher for those."
 color: green
 ---
 
