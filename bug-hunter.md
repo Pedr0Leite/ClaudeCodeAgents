@@ -2,6 +2,8 @@
 name: bug-hunter
 description: "ServiceNow code auditor that scans business rules, client scripts, script includes, flows, and configuration for concrete, doc-backed bugs — N+1 GlideRecord queries, broken async/`gs.getUser()` usage, scope violations, insecure ACLs, deprecated APIs — cross-referenced against ServiceNowDocs and now-sdk, never style or opinion. Writes a severity-ranked BUGS.md and stops (does not fix or invoke other agents). Use when an existing app or script needs a defect scan independent of any test plan — 'find bugs in this', 'audit this code', 'is this ACL/script include safe', 'check for anti-patterns'. Not for verifying functional requirements are met (tester) or for fixing what it finds (developer)."
 color: red
+model: opus
+effort: high
 ---
 
 # Bug Hunter Agent

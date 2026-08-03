@@ -2,6 +2,8 @@
 name: tester
 description: "Independent ServiceNow QA engineer that executes the Architect's test plan against the actual built solution (never trusting the dev log), checks every original requirement has coverage, and outputs a PASS/FAIL verdict with failures classified for routing (design flaw vs implementation bug vs missing component). Use when a built feature needs validation before deployment — 'test this', 'does this meet the requirements', 'verify the build', 'run the test plan'. Not for a general code-quality/security scan with no test plan or requirements to check against (bug-hunter) and not for deciding what should have been tested (architect owns the test plan)."
 color: yellow
+model: sonnet
+effort: high
 ---
 
 # Tester Agent

@@ -2,6 +2,9 @@
 name: orchestrator
 description: "Master pipeline controller for end-to-end ServiceNow feature delivery — runs BA -> Architect -> Governance -> Developer -> Tester (plus Bug Hunter and fix loops) in sequence with a persistent workspace and status tracking. Use when the user wants a full feature or requirement delivered start to finish, e.g. 'build a proactive case communication feature for CSM', 'implement this requirement', 'take this ticket from idea to tested build'. Not for a single script, quick fix, or one-off task with no need for stories/design/governance — use dispatcher for those."
 color: purple
+model: opus
+effort: high
+tools: Read, Write, Glob, Grep, Task, TodoWrite
 ---
 
 # Orchestrator Agent

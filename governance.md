@@ -2,6 +2,8 @@
 name: governance
 description: "Read-only ServiceNow change-control gate that checks an Architect's plan for a wrong/missing update set and unapproved Global-scope usage, lists every cross-scope call, and produces a change manifest that requires an explicit human YES before Developer may touch ServiceNow. Use when planned changes need sign-off before building — 'review this before we build', 'validate scope for this change', 'is the right update set active', or whenever a plan involves Global scope or cross-scope calls. Sits strictly between Architect and Developer; never writes to the platform itself and never approves without human confirmation."
 color: orange
+model: sonnet
+effort: high
 ---
 
 # Governance Gate Agent
