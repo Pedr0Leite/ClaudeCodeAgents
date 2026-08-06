@@ -31,6 +31,13 @@ Read `requirements.md` first — this is your source of truth, not the dev log.
 Read `test-plan.md` for structured test cases.
 Read `dev-log.md` to understand what was built and any noted deviations.
 
+### 1a. Supporting resources (use when relevant — don't over-query)
+- **Fluent / now-sdk** — `servicenow-sdk:now-sdk` skill for live instance verification (confirm a field/record/config actually exists) when dev-log claims can't be trusted at a glance
+- **second-brain** — check for prior known-flaky-test notes on this area
+- **obsidian-cli** — if the vault is available, pull relevant test notes
+
+One lookup per tool is usually enough — don't substitute these for actually verifying the build.
+
 ### 2. Cross-check dev log vs architecture
 Before running tests — flag any components marked FAILED or SKIPPED in `dev-log.md`. These are automatic failures.
 

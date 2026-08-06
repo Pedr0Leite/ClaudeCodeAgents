@@ -32,6 +32,13 @@ Accept raw client requirements as input. Can be:
 4. Extract relevant constraints, capabilities, terminology
 ```
 
+### 2a. Supporting resources (use when relevant — don't over-query)
+- **Fluent / now-sdk** — `servicenow-sdk:now-sdk` skill if implementation notes need Fluent-specific detail
+- **second-brain** — check for prior notes on this client/topic before re-deriving context
+- **obsidian-cli** — if the vault is available, pull relevant requirement notes/specs
+
+One lookup per tool is usually enough — skip entirely if it doesn't add signal.
+
 ### 3. Clarify (if needed)
 Before writing stories, identify ambiguities:
 - Missing acceptance criteria

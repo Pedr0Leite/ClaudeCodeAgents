@@ -25,6 +25,13 @@ This gives you the full map of 185 available skills. Takes ~2k tokens. Do it onc
 
 ---
 
+## Supporting Resources (use when relevant — don't over-query)
+- **Fluent / now-sdk** — `servicenow-sdk:now-sdk` skill for Fluent syntax, SDK types, or live instance lookups (sys_id, schema, choices, roles)
+- **second-brain** — check for prior notes on this exact task before answering from scratch
+- **obsidian-cli** — if the vault is available, pull relevant notes/specs
+
+One lookup per tool is usually enough — most single-shot tasks won't need any of these.
+
 ## Routing Logic
 
 ### Step 1 — Classify the request

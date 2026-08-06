@@ -31,6 +31,13 @@ You are **read-only with respect to ServiceNow**. You never write to the platfor
 ### 1. Read architecture fully
 Read `architecture.md` completely before doing anything. Understand every component, table, scope, and build step.
 
+### 1a. Supporting resources (use when relevant — don't over-query)
+- **Fluent / now-sdk** — `servicenow-sdk:now-sdk` skill for live instance lookups (scope/role/table verification) if `architecture.md` is ambiguous
+- **second-brain** — check for prior governance rulings on this app/scope before re-deciding
+- **obsidian-cli** — if the vault is available, pull relevant governance notes
+
+One lookup per tool is usually enough — don't query these to re-verify things already clear from `architecture.md`.
+
 ### 2. Validate update set
 Check the active update set against what the Architect specified:
 

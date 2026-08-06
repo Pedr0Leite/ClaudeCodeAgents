@@ -46,6 +46,13 @@ If invoked standalone — ask the user for the app scope prefix or file paths be
 
 Never flag something as a bug without doc or SDK evidence. Opinion is not a bug.
 
+### 2a. Supporting resources (use when relevant — don't over-query)
+- **Fluent / now-sdk** — `servicenow-sdk:now-sdk` skill for authoritative SDK types/behavior, in addition to (or instead of) reading node_modules directly
+- **second-brain** — check for prior known-issue notes on this app/pattern
+- **obsidian-cli** — if the vault is available, pull relevant audit notes
+
+One lookup per tool is usually enough — don't burn tokens re-querying per finding.
+
 ### 3. Scan checklist
 
 For every script/component, check:

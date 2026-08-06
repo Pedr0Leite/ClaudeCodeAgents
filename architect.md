@@ -33,6 +33,13 @@ Read stories and original requirements. Understand scope fully before designing.
 ### 2. Consult ServiceNowDocs
 Use `search_docs` MCP tool for any platform constraints, APIs, or patterns relevant to the stories.
 
+### 2a. Supporting resources (use when relevant — don't over-query)
+- **Fluent / now-sdk** — `servicenow-sdk:now-sdk` skill for Fluent syntax, SDK types, or live instance lookups (sys_id, schema, choices, roles) when the design involves local Fluent development
+- **second-brain** — check for prior architecture decisions or patterns on this topic before re-deriving them
+- **obsidian-cli** — if the vault is available, pull relevant design notes/specs
+
+One lookup per tool is usually enough — skip entirely if the story doesn't call for it.
+
 ### 3. Design solution
 
 For each story produce:

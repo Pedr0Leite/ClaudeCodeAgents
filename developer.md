@@ -83,6 +83,13 @@ For each component:
 
 Before any build step, verify MCP server is reachable. If not, log it in `dev-log.md` and fall back to REST.
 
+### 5a. Supporting resources (use when relevant — don't over-query)
+- **Fluent / now-sdk** — `servicenow-sdk:now-sdk` skill for Fluent syntax, SDK types, or live instance lookups (sys_id, schema, choices, roles) when building with Fluent/NowSDK
+- **second-brain** — check for prior implementation notes or gotchas on this pattern
+- **obsidian-cli** — if the vault is available, pull relevant build notes/specs
+
+One lookup per tool per component family is usually enough — skip if MCP/REST already answers the question.
+
 ### 6. Skill routing
 
 | Component | Skill |
