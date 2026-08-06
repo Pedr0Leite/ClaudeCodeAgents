@@ -1,6 +1,6 @@
-<svg width="100%" viewBox="0 0 680 780" role="img" xmlns="http://www.w3.org/2000/svg">
+<svg width="100%" viewBox="0 0 700 980" role="img" xmlns="http://www.w3.org/2000/svg">
   <title>ServiceNow Agent Orchestration Pipeline</title>
-  <desc>Flowchart showing the Orchestrator commanding BA, Architect, Developer and Tester agents in sequence, with a fix loop back to Architect or Developer on failure.</desc>
+  <desc>Flowchart showing the Orchestrator commanding BA, Architect, Governance Gate, Developer, Tester and Bug Hunter agents in sequence, with fix loops back to Architect or Developer, a human-approval gate at Governance, and shared supporting resources (Fluent/now-sdk, second-brain, obsidian-cli) available to every agent.</desc>
   <defs>
     <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
       <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -9,6 +9,7 @@
       text { font-family: sans-serif; fill: #333; }
       .th { font-size: 14px; font-weight: 600; fill: #1a1a1a; }
       .ts { font-size: 12px; fill: #555; }
+      .tt { font-size: 11px; fill: #666; }
       .arr { stroke: #888; stroke-width: 1.2; fill: none; }
       .c-purple rect { fill: #EEEDFE; stroke: #534AB7; }
       .c-purple text { fill: #3C3489; }
@@ -22,6 +23,8 @@
       .c-amber text { fill: #633806; }
       .c-coral rect { fill: #FAECE7; stroke: #993C1D; }
       .c-coral text { fill: #711B0A; }
+      .c-gray rect { fill: #F2F2F2; stroke: #999; }
+      .c-gray text { fill: #444; }
     </style>
   </defs>
 
@@ -53,67 +56,117 @@
   </g>
 
   <line x1="340" y1="268" x2="340" y2="308" class="arr" marker-end="url(#arrow)"/>
-  <text class="ts" x="350" y="292" dominant-baseline="central">architecture.md</text>
+  <text class="ts" x="350" y="288" dominant-baseline="central">architecture.md</text>
+
+  <!-- Governance Gate -->
+  <g class="c-amber">
+    <rect x="215" y="308" width="250" height="66" rx="8" stroke-width="0.5"/>
+    <text class="th" x="340" y="328" text-anchor="middle" dominant-baseline="central">Governance Gate</text>
+    <text class="ts" x="340" y="346" text-anchor="middle" dominant-baseline="central">Scope + update-set validation</text>
+    <text class="ts" x="340" y="362" text-anchor="middle" dominant-baseline="central">Requires explicit human YES</text>
+  </g>
+
+  <line x1="340" y1="374" x2="340" y2="414" class="arr" marker-end="url(#arrow)"/>
+  <text class="ts" x="350" y="394" dominant-baseline="central">governance-approval.md</text>
+
+  <!-- REJECTED / BLOCKED back to Architect -->
+  <path d="M215 341 L160 341 L160 240 L215 240" fill="none" stroke="#993C1D" stroke-width="1" stroke-dasharray="5 3" marker-end="url(#arrow)"/>
+  <text class="tt" x="70" y="292" text-anchor="middle">REJECTED /</text>
+  <text class="tt" x="70" y="305" text-anchor="middle">BLOCKED</text>
 
   <!-- Developer -->
   <g class="c-green">
-    <rect x="215" y="308" width="250" height="56" rx="8" stroke-width="0.5"/>
-    <text class="th" x="340" y="330" text-anchor="middle" dominant-baseline="central">Developer</text>
-    <text class="ts" x="340" y="350" text-anchor="middle" dominant-baseline="central">Build in ServiceNow via MCP</text>
+    <rect x="215" y="414" width="250" height="56" rx="8" stroke-width="0.5"/>
+    <text class="th" x="340" y="436" text-anchor="middle" dominant-baseline="central">Developer</text>
+    <text class="ts" x="340" y="456" text-anchor="middle" dominant-baseline="central">Build in ServiceNow via MCP</text>
   </g>
 
-  <line x1="340" y1="364" x2="340" y2="404" class="arr" marker-end="url(#arrow)"/>
-  <text class="ts" x="350" y="388" dominant-baseline="central">dev-log.md</text>
+  <line x1="340" y1="470" x2="340" y2="510" class="arr" marker-end="url(#arrow)"/>
+  <text class="ts" x="350" y="490" dominant-baseline="central">dev-log.md</text>
 
   <!-- Tester -->
   <g class="c-amber">
-    <rect x="215" y="404" width="250" height="56" rx="8" stroke-width="0.5"/>
-    <text class="th" x="340" y="426" text-anchor="middle" dominant-baseline="central">Tester</text>
-    <text class="ts" x="340" y="446" text-anchor="middle" dominant-baseline="central">Validate against requirements</text>
+    <rect x="215" y="510" width="250" height="56" rx="8" stroke-width="0.5"/>
+    <text class="th" x="340" y="532" text-anchor="middle" dominant-baseline="central">Tester</text>
+    <text class="ts" x="340" y="552" text-anchor="middle" dominant-baseline="central">Validate against requirements</text>
   </g>
 
-  <line x1="340" y1="460" x2="340" y2="500" class="arr" marker-end="url(#arrow)"/>
+  <line x1="340" y1="566" x2="340" y2="606" class="arr" marker-end="url(#arrow)"/>
 
-  <!-- Gate -->
-  <polygon points="340,500 380,530 340,560 300,530" fill="none" stroke="#888" stroke-width="1"/>
-  <text class="th" x="340" y="530" text-anchor="middle" dominant-baseline="central">Pass?</text>
+  <!-- Pass? gate -->
+  <polygon points="340,606 380,636 340,666 300,636" fill="none" stroke="#888" stroke-width="1"/>
+  <text class="th" x="340" y="636" text-anchor="middle" dominant-baseline="central">Pass?</text>
 
-  <line x1="340" y1="560" x2="340" y2="600" class="arr" marker-end="url(#arrow)"/>
-  <text class="ts" x="350" y="582" dominant-baseline="central">Yes</text>
+  <text class="ts" x="386" y="630" dominant-baseline="central">No</text>
+  <path d="M380 636 L580 636 L580 460" fill="none" stroke="#888" stroke-width="1" marker-end="url(#arrow)"/>
+
+  <line x1="340" y1="666" x2="340" y2="706" class="arr" marker-end="url(#arrow)"/>
+  <text class="ts" x="350" y="686" dominant-baseline="central">Yes</text>
+
+  <!-- Bug Hunter -->
+  <g class="c-coral">
+    <rect x="215" y="706" width="250" height="56" rx="8" stroke-width="0.5"/>
+    <text class="th" x="340" y="728" text-anchor="middle" dominant-baseline="central">Bug Hunter</text>
+    <text class="ts" x="340" y="748" text-anchor="middle" dominant-baseline="central">Scan build → BUGS.md</text>
+  </g>
+
+  <line x1="340" y1="762" x2="340" y2="802" class="arr" marker-end="url(#arrow)"/>
+
+  <!-- Crit/High? gate -->
+  <polygon points="340,802 380,832 340,862 300,832" fill="none" stroke="#888" stroke-width="1"/>
+  <text class="th" x="340" y="826" text-anchor="middle" dominant-baseline="central">Crit /</text>
+  <text class="th" x="340" y="840" text-anchor="middle" dominant-baseline="central">High?</text>
+
+  <text class="ts" x="386" y="826" dominant-baseline="central">Yes</text>
+  <path d="M380 832 L620 832 L620 442 L465 442" fill="none" stroke="#993C1D" stroke-width="1" stroke-dasharray="5 3" marker-end="url(#arrow)"/>
+
+  <line x1="340" y1="862" x2="340" y2="902" class="arr" marker-end="url(#arrow)"/>
+  <text class="ts" x="350" y="882" dominant-baseline="central">No</text>
 
   <!-- Deploy -->
   <g class="c-teal">
-    <rect x="215" y="600" width="250" height="44" rx="8" stroke-width="0.5"/>
-    <text class="th" x="340" y="622" text-anchor="middle" dominant-baseline="central">Ready to deploy</text>
+    <rect x="215" y="902" width="250" height="44" rx="8" stroke-width="0.5"/>
+    <text class="th" x="340" y="924" text-anchor="middle" dominant-baseline="central">Ready to deploy</text>
   </g>
-
-  <text class="ts" x="386" y="524" dominant-baseline="central">No</text>
-  <path d="M380 530 L580 530 L580 360" fill="none" stroke="#888" stroke-width="1" marker-end="url(#arrow)"/>
 
   <!-- Fix loop box -->
   <g class="c-coral">
-    <rect x="490" y="300" width="170" height="66" rx="8" stroke-width="0.5"/>
-    <text class="th" x="575" y="322" text-anchor="middle" dominant-baseline="central">Fix loop</text>
-    <text class="ts" x="575" y="336" text-anchor="middle" dominant-baseline="central">Logic flaw → Architect</text>
-    <text class="ts" x="575" y="352" text-anchor="middle" dominant-baseline="central">Impl bug → Developer</text>
+    <rect x="490" y="380" width="170" height="80" rx="8" stroke-width="0.5"/>
+    <text class="th" x="575" y="402" text-anchor="middle" dominant-baseline="central">Fix loop</text>
+    <text class="ts" x="575" y="418" text-anchor="middle" dominant-baseline="central">Logic flaw → Architect</text>
+    <text class="ts" x="575" y="434" text-anchor="middle" dominant-baseline="central">Impl bug → Developer</text>
+    <text class="tt" x="575" y="450" text-anchor="middle">Max 5 iterations</text>
   </g>
 
   <!-- Logic flaw → Architect -->
-  <path d="M490 316 L440 316 L440 240 L465 240" fill="none" stroke="#888" stroke-width="1" stroke-dasharray="5 3" marker-end="url(#arrow)"/>
-  <!-- Impl bug → Developer: routes below Fix box to avoid overlap -->
-  <path d="M575 356 L575 390 L440 390 L440 336 L465 336" fill="none" stroke="#888" stroke-width="1" stroke-dasharray="5 3" marker-end="url(#arrow)"/>
-  <text class="ts" x="575" y="376" text-anchor="middle">Max 5 iterations</text>
+  <path d="M490 396 L440 396 L440 240 L465 240" fill="none" stroke="#888" stroke-width="1" stroke-dasharray="5 3" marker-end="url(#arrow)"/>
+  <!-- Impl bug → Developer -->
+  <path d="M490 434 L455 434 L455 442 L465 442" fill="none" stroke="#888" stroke-width="1" stroke-dasharray="5 3" marker-end="url(#arrow)"/>
 
   <!-- Tool priority -->
-  <rect x="20" y="308" width="170" height="76" rx="8" fill="none" stroke="#ccc" stroke-width="0.5" stroke-dasharray="4 3"/>
-  <text class="th" x="105" y="332" text-anchor="middle" dominant-baseline="central">Tool priority</text>
-  <text class="ts" x="105" y="352" text-anchor="middle" dominant-baseline="central">1. ServiceNow MCP</text>
-  <text class="ts" x="105" y="368" text-anchor="middle" dominant-baseline="central">2. REST API (fallback)</text>
-  <line x1="190" y1="336" x2="215" y2="336" class="arr" marker-end="url(#arrow)"/>
+  <g class="c-gray">
+    <rect x="20" y="414" width="170" height="76" rx="8" stroke-width="0.5" stroke-dasharray="4 3"/>
+    <text class="th" x="105" y="438" text-anchor="middle" dominant-baseline="central">Tool priority</text>
+    <text class="ts" x="105" y="458" text-anchor="middle" dominant-baseline="central">1. ServiceNow MCP</text>
+    <text class="ts" x="105" y="474" text-anchor="middle" dominant-baseline="central">2. REST API (fallback)</text>
+  </g>
+  <line x1="190" y1="442" x2="215" y2="442" class="arr" marker-end="url(#arrow)"/>
+
+  <!-- Supporting resources (available to all agents) -->
+  <g class="c-gray">
+    <rect x="20" y="200" width="170" height="96" rx="8" stroke-width="0.5" stroke-dasharray="4 3"/>
+    <text class="th" x="105" y="222" text-anchor="middle" dominant-baseline="central">Supporting resources</text>
+    <text class="ts" x="105" y="240" text-anchor="middle" dominant-baseline="central">Fluent / now-sdk</text>
+    <text class="ts" x="105" y="256" text-anchor="middle" dominant-baseline="central">second-brain</text>
+    <text class="ts" x="105" y="272" text-anchor="middle" dominant-baseline="central">obsidian-cli</text>
+    <text class="tt" x="105" y="288" text-anchor="middle">used sparingly, all agents</text>
+  </g>
+  <line x1="190" y1="248" x2="215" y2="248" class="arr" marker-end="url(#arrow)"/>
 
   <!-- Workspace -->
-  <rect x="20" y="600" width="170" height="56" rx="8" fill="none" stroke="#ccc" stroke-width="0.5" stroke-dasharray="4 3"/>
-  <text class="th" x="105" y="622" text-anchor="middle" dominant-baseline="central">Workspace</text>
-  <text class="ts" x="105" y="642" text-anchor="middle" dominant-baseline="central">~/.claude/workspace/</text>
-  <text class="ts" x="105" y="658" text-anchor="middle" dominant-baseline="central">[project-slug]/</text>
+  <g class="c-gray">
+    <rect x="20" y="902" width="170" height="56" rx="8" stroke-width="0.5" stroke-dasharray="4 3"/>
+    <text class="th" x="105" y="924" text-anchor="middle" dominant-baseline="central">Workspace</text>
+    <text class="ts" x="105" y="944" text-anchor="middle" dominant-baseline="central">~/.claude/workspace/[slug]/</text>
+  </g>
 </svg>

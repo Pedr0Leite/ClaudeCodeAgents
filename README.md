@@ -31,24 +31,31 @@ Independent QA gate that validates the built solution against the original requi
 ### Dispatcher
 General-purpose entry point for any ServiceNow or full-stack development task. Loads a skill index of 185+ skills at startup, classifies the request by domain, and routes to the correct skill automatically. Covers ITSM, CSM, HRSD, development, GenAI, admin, security, GRC, catalog, CMDB, and general coding (JS, Python, React, Node).
 
+### Bug Hunter
+Independent code auditor invoked after a passing test run (or standalone). Scans business rules, client scripts, script includes, and flows for concrete, doc-backed defects — N+1 queries, broken async/`gs.getUser()` usage, scope violations, insecure ACLs, deprecated APIs — cross-referenced against ServiceNowDocs and now-sdk, never style or opinion. Writes a severity-ranked `BUGS.md` and stops; it never fixes issues or invokes other agents itself. CRITICAL/HIGH findings route back to the Developer for a fix loop; MEDIUM/LOW are advisory only.
+
 ---
 
 ## Rule of thumb
 - Small task → **Dispatcher**
 - Full feature → **Orchestrator**
+- Defect scan on existing code, independent of a test plan → **Bug Hunter** directly
 
 ---
 
 ## Pipeline
 
 ```
-Requirements → BA → Architect → Governance Gate → Developer → Tester
-                                      ↑                           |
-                                      |        (fix loop)         |
-                                      └───── Architect ←──────────┘
+Requirements → BA → Architect → Governance Gate → Developer → Tester → Bug Hunter → Ready to deploy
+                        ↑              |    ↑                             |              |
+                        |     REJECTED/BLOCKED                    (fix loop, No)     (fix loop,
+                        |              |    |                              |          Crit/High)
+                        └──────────────┘    └───────────── Architect / Developer ◄─────┘
 ```
 
-The Governance Gate is the read/write boundary. Everything before it is planning. Everything after it writes to ServiceNow. No write reaches the platform without a human YES.
+The Governance Gate is the read/write boundary. Everything before it is planning. Everything after it writes to ServiceNow. No write reaches the platform without a human YES. Bug Hunter runs after a PASS as a final defect scan — CRITICAL/HIGH findings loop back to the Developer before deployment; MEDIUM/LOW are reported but don't block.
+
+See [`orchestration.svg`](orchestration.svg) above for the full visual flow, including the Governance approval/rejection path and the shared supporting resources available to every agent.
 
 ---
 
@@ -78,9 +85,10 @@ Then describe your requirement when prompted.
   orchestrator.md   ← commands everyone
   ba-agent.md
   architect.md
-  governance.md     ← change control gate (new)
+  governance.md     ← change control gate
   developer.md      ← requires ponytail; blocked without governance approval
   tester.md
+  bug-hunter.md     ← final defect scan, runs after a PASS
   dispatcher.md
 ```
 
@@ -100,8 +108,23 @@ Each pipeline run creates a workspace with handoff artifacts:
   governance-approval.md   ← Governance: approval token read by Developer
   dev-log.md               ← Developer build log
   test-results.md          ← Tester results
+  BUGS.md                  ← Bug Hunter findings (optional, on-demand)
   status.md                ← Current pipeline state
 ```
+
+---
+
+## Supporting Resources
+
+Every ServiceNow agent (BA, Architect, Governance, Developer, Tester, Bug Hunter, Dispatcher) can reach for these when they add real signal — used sparingly, not queried on every step, to keep token spend low:
+
+| Resource | Skill | Use for |
+|---|---|---|
+| **Fluent / now-sdk** | `servicenow-sdk:now-sdk` | Fluent syntax, SDK types, live instance lookups (sys_id, schema, choices, roles) |
+| **second-brain** | `second-brain` | Prior notes, decisions, or known issues on the current topic before re-deriving them |
+| **obsidian-cli** | `obsidian-cli` | Pulling relevant specs/notes from the user's vault, when available |
+
+These are optional lookups, not required steps — each agent's instructions cap it at roughly one lookup per tool per task. The Orchestrator itself doesn't use these directly since it only delegates to the agents above.
 
 ---
 
@@ -131,6 +154,7 @@ Governance outcomes:
 |---|---|---|
 | BA + Architect + Developer | [ServiceNowDocs](https://github.com/ServiceNow/ServiceNowDocs) | Official platform docs via `search_docs` MCP tool |
 | Developer | [ponytail](https://github.com/DietrichGebert/ponytail) | Enforces OOTB-first, minimal custom code approach |
+| All agents (optional) | `servicenow-sdk:now-sdk`, `second-brain`, `obsidian-cli` skills | See [Supporting Resources](#supporting-resources) — used sparingly, no setup required beyond having the skills installed |
 
 ### Setup
 
