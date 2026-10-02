@@ -8,7 +8,7 @@ A team of specialized Claude Code agents for end-to-end ServiceNow scoped applic
 ## Agents
 
 ### Orchestrator
-Master pipeline controller that commands the full development team in sequence. Receives client requirements, creates a workspace, and drives BA → Architect → Governance → Developer → Tester through to a passing test result. Handles fix loops automatically (up to 5 iterations), routing failures back to the correct agent based on failure type.
+Master pipeline controller that commands the full development team in sequence. Receives client requirements, creates a workspace, and drives BA → Architect → Governance → Developer → Tester → Bug Hunter through to a passing result, then hands off to the Deployer (which asks you to confirm the version). Handles fix loops automatically (up to 5 iterations), routing failures back to the correct agent based on failure type.
 
 ### BA Agent (Business Analyst)
 Transforms raw client requirements (free text, bullet points, meeting notes) into structured `rm_story` records grounded in official ServiceNow documentation. Consults the ServiceNowDocs repo via an index before writing stories, identifies ambiguities, and refines output iteratively.
@@ -34,6 +34,9 @@ General-purpose entry point for any ServiceNow or full-stack development task. L
 ### Bug Hunter
 Independent code auditor invoked after a passing test run (or standalone). Scans business rules, client scripts, script includes, and flows for concrete, doc-backed defects — N+1 queries, broken async/`gs.getUser()` usage, scope violations, insecure ACLs, deprecated APIs — cross-referenced against ServiceNowDocs and now-sdk, never style or opinion. Writes a severity-ranked `BUGS.md` and stops; it never fixes issues or invokes other agents itself. CRITICAL/HIGH findings route back to the Developer for a fix loop; MEDIUM/LOW are advisory only.
 
+### Deployer
+Handles `npm install` and deployment. Decides whether the release is a patch, minor or major from the changes (dev log, architecture, git diff), asks for a human YES, then runs `tosn-p`, `tosn-mi` or `tosn-mj`. Refuses to deploy on a failing test result or open CRITICAL/HIGH bugs.
+
 ---
 
 ## Rule of thumb
@@ -46,7 +49,7 @@ Independent code auditor invoked after a passing test run (or standalone). Scans
 ## Pipeline
 
 ```
-Requirements → BA → Architect → Governance Gate → Developer → Tester → Bug Hunter → Ready to deploy
+Requirements → BA → Architect → Governance Gate → Developer → Tester → Bug Hunter → Deployer
                         ↑              |    ↑                             |              |
                         |     REJECTED/BLOCKED                    (fix loop, No)     (fix loop,
                         |              |    |                              |          Crit/High)
@@ -89,6 +92,7 @@ Then describe your requirement when prompted.
   developer.md      ← requires ponytail; blocked without governance approval
   tester.md
   bug-hunter.md     ← final defect scan, runs after a PASS
+  deployer.md       ← install + versioned deploy (patch/minor/major), needs human YES
   dispatcher.md
 ```
 
